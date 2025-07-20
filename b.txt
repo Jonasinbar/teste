@@ -1,1 +1,26 @@
-e
+[
+  {
+    "Nom": "Projet Alpha",
+    "Responsable": "Claire Dupont",
+    "Date de début": "2024-10-01",
+    "Statut": "En cours",
+    "Progression (%)": 45,
+    "Budget actuel (€)": 15000,
+    "Risques détectés": "Faible",
+    "Dernière mise à jour": "2025-07-15",
+    "Équipe assignée": "Tech Paris"
+  },
+  {
+    "Nom": "Projet Beta",
+    "Responsable": "Jean Martin",
+    "Date de début": "2024-05-15",
+    "Statut": "Terminé",
+    "Progression (%)": 100,
+    "Budget actuel (€)": 42000,
+    "Risques détectés": "Néant",
+    "Dernière mise à jour": "2025-06-28",
+    "Équipe assignée": "Data Genève"
+  }
+]
+
+
