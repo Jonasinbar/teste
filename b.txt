@@ -1,26 +1,47 @@
 [
   {
-    "Nom": "Projet Alpha",
-    "Responsable": "Claire Dupont",
-    "Date de début": "2024-10-01",
-    "Statut": "En cours",
-    "Progression (%)": 45,
-    "Budget actuel (€)": 15000,
-    "Risques détectés": "Faible",
-    "Dernière mise à jour": "2025-07-15",
-    "Équipe assignée": "Tech Paris"
+    "email": "john.doe@test.com",
+    "team": "L3",
+    "shift": "06-14",
+    "numberOfIncidentDoneToday": 12,
+    "isActive": true,
+    "busySince": "2025-07-20T09:13:12",
+    "ActiveIncidents": ["180965", "180964", "180962"],
+    "remainingTTH": "01:43:57",
+    "lastModified": "15:07:43",
+    "incidentsWorkedToday": ["180965", "180964", "180962"],
+    "activeSignatures": "custom_deployer_by_new_user_URLRedirectDownload malware was prevented",
+    "isShortTTH": false,
+    "isRareSignature": false
   },
   {
-    "Nom": "Projet Beta",
-    "Responsable": "Jean Martin",
-    "Date de début": "2024-05-15",
-    "Statut": "Terminé",
-    "Progression (%)": 100,
-    "Budget actuel (€)": 42000,
-    "Risques détectés": "Néant",
-    "Dernière mise à jour": "2025-06-28",
-    "Équipe assignée": "Data Genève"
+    "email": "sophie.wang@test.com",
+    "team": "L2",
+    "shift": "14-22",
+    "numberOfIncidentDoneToday": 8,
+    "isActive": false,
+    "busySince": null,
+    "ActiveIncidents": [],
+    "remainingTTH": null,
+    "lastModified": "14:00:02",
+    "incidentsWorkedToday": ["180958", "180961"],
+    "activeSignatures": "Phishing document",
+    "isShortTTH": false,
+    "isRareSignature": false
+  },
+  {
+    "email": "mohamed.alami@test.com",
+    "team": "L3",
+    "shift": "22-06",
+    "numberOfIncidentDoneToday": 3,
+    "isActive": true,
+    "busySince": "2025-07-20T07:45:21",
+    "ActiveIncidents": ["180956"],
+    "remainingTTH": "00:47:12",
+    "lastModified": "15:00:16",
+    "incidentsWorkedToday": ["180956"],
+    "activeSignatures": "Wastarac malware was detected",
+    "isShortTTH": true,
+    "isRareSignature": true
   }
 ]
-
-
