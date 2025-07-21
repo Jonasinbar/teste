@@ -1,1 +1,50 @@
-e
+import requests
+
+# Replace these with your actual values
+TENANT_ID = 'your-tenant-id'
+CLIENT_ID = 'your-client-id'
+CLIENT_SECRET = 'your-client-secret'
+SHAREPOINT_SITE_ID = 'your-site-id'
+EXCEL_FILE_PATH = '/Shared Documents/yourfile.xlsx'  # Exact path in document library
+RANGE = 'Sheet1!A1:D10'  # Modify based on your sheet structure
+
+
+def get_access_token():
+    token_url = f'https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0/token'
+    token_data = {
+        'grant_type': 'client_credentials',
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'scope': 'https://graph.microsoft.com/.default'
+    }
+
+    response = requests.post(token_url, data=token_data)
+    response.raise_for_status()
+    return response.json()['access_token']
+
+
+def get_excel_content_from_graph():
+    token = get_access_token()
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+
+    # Get the file item ID
+    file_url = f'https://graph.microsoft.com/v1.0/sites/{SHAREPOINT_SITE_ID}/drive/root:{EXCEL_FILE_PATH}'
+    file_resp = requests.get(file_url, headers=headers)
+    file_resp.raise_for_status()
+    file_id = file_resp.json()['id']
+
+    # Now get the range values
+    excel_range_url = f'https://graph.microsoft.com/v1.0/sites/{SHAREPOINT_SITE_ID}/drive/items/{file_id}/workbook/worksheets/Sheet1/range(address=\'{RANGE}\')'
+    range_resp = requests.get(excel_range_url, headers=headers)
+    range_resp.raise_for_status()
+    return range_resp.json()['values']
+
+
+# Example usage
+if __name__ == "__main__":
+    data = get_excel_content_from_graph()
+    for row in data:
+        print(row)
