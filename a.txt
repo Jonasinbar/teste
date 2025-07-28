@@ -1,3 +1,15 @@
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+
+
 <div id="loading" class="flex justify-center items-center py-10">
   <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-400 border-t-transparent"></div>
 </div>
