@@ -1,132 +1,49 @@
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+Base = declarative_base()
 
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+class User(Base):
+    __tablename__ = "users"
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True)
 
-
-
-<div id="loading" class="flex justify-center items-center py-10">
-  <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-400 border-t-transparent"></div>
-</div>
-
-
-<!-- Table Wrapper (hidden by default) -->
-<div id="table-wrapper" class="hidden overflow-x-auto bg-white shadow-md rounded-lg">
-  <table id="data-table" class="min-w-full divide-y divide-gray-200">
-    <thead class="bg-gray-200 sticky top-0 z-10">
-      <tr id="table-headers"></tr>
-    </thead>
-    <tbody id="table-body" class="divide-y divide-gray-100"></tbody>
-  </table>
-</div>
+    def __repr__(self):
+        return f"<User(id={self.id}, name='{self.name}', email='{self.email}')>"
 
 
-fetch('/api/data')
-  .then(res => res.json())
-  .then(data => {
-    const loadingDiv = document.getElementById('loading');
-    const tableWrapper = document.getElementById('table-wrapper');
-
-    // Hide loading, show table
-    loadingDiv.classList.add('hidden');
-    tableWrapper.classList.remove('hidden');
-
-    if (data.length === 0) return;
-
-    const orderedHeaders = ["Nom", "Age", "Ville"]; // Customize your headers
-
-    const headerRow = document.getElementById('table-headers');
-    orderedHeaders.forEach(h => {
-      const th = document.createElement('th');
-      th.textContent = h;
-      th.className = "px-6 py-3 text-left text-sm font-semibold text-gray-700";
-      headerRow.appendChild(th);
-    });
-
-    const body = document.getElementById('table-body');
-    data.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.className = "hover:bg-gray-100 cursor-pointer transition-colors";
-      tr.onclick = () => handleRowClick(row);
-
-      orderedHeaders.forEach(h => {
-        const td = document.createElement('td');
-        td.textContent = row[h];
-        td.className = "px-6 py-4 text-sm text-gray-800 whitespace-nowrap";
-        tr.appendChild(td);
-      });
-
-      body.appendChild(tr);
-    });
-  });
+==============
 
 
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base, User
 
-<!-- templates/hotd.html -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HotD Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col items-center p-4">
-  <div class="w-full max-w-6xl">
-    <h1 class="text-3xl font-bold mb-6 text-center">Bonjour {{ username }}</h1>
+# Remplace par tes paramètres de connexion
+DATABASE_URL = "postgresql+psycopg2://monuser:monpassword@localhost:5432/mondb"
 
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-      <table id="data-table" class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-200 sticky top-0 z-10">
-          <tr id="table-headers"></tr>
-        </thead>
-        <tbody id="table-body" class="divide-y divide-gray-100"></tbody>
-      </table>
-    </div>
-  </div>
+# Créer le moteur SQLAlchemy
+engine = create_engine(DATABASE_URL, echo=True)
 
-  <script>
-    function handleRowClick(rowData) {
-      alert(`Vous avez cliqué sur : ${rowData["Nom"]}`);
-    }
+# Créer les tables (si elles n’existent pas déjà)
+Base.metadata.create_all(engine)
 
-    fetch('/api/data')
-      .then(res => res.json())
-      .then(data => {
-        if (data.length === 0) return;
+# Créer une session
+SessionLocal = sessionmaker(bind=engine)
+session = SessionLocal()
 
-        const orderedHeaders = ["Nom", "Age", "Ville"]; // 👈 Change column order here
+# Ajouter des valeurs
+user1 = User(name="Alice", email="alice@example.com")
+user2 = User(name="Bob", email="bob@example.com")
 
-        const headerRow = document.getElementById('table-headers');
-        orderedHeaders.forEach(h => {
-          const th = document.createElement('th');
-          th.textContent = h;
-          th.className = "px-6 py-3 text-left text-sm font-semibold text-gray-700";
-          headerRow.appendChild(th);
-        });
+session.add_all([user1, user2])
+session.commit()
 
-        const body = document.getElementById('table-body');
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-gray-100 cursor-pointer transition-colors";
-          tr.onclick = () => handleRowClick(row);
+print("✅ Données insérées avec succès !")
 
-          orderedHeaders.forEach(h => {
-            const td = document.createElement('td');
-            td.textContent = row[h];
-            td.className = "px-6 py-4 text-sm text-gray-800 whitespace-nowrap";
-            tr.appendChild(td);
-          });
-
-          body.appendChild(tr);
-        });
-      });
-  </script>
-</body>
-</html>
+# Vérifier en lisant
+for user in session.query(User).all():
+    print(user)
